@@ -41,7 +41,7 @@ Capistrano::Configuration.instance(true).load do
     end
   end
   
+  after "deploy:update", "foreman:env"       # Write out foreman environment file
   after "deploy:update", "foreman:export"    # Export foreman scripts
   after "deploy:update", "foreman:restart"   # Restart application scripts
-  after "deploy:update", "foreman:env"   # Restart application scripts
 end
