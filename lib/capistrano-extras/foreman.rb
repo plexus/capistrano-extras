@@ -7,7 +7,7 @@ Capistrano::Configuration.instance(true).load do
     desc 'Export the Procfile to Ubuntu upstart scripts'
     task :export, :roles => :app do
       
-      run "cd #{release_path} && sudo bundle exec foreman export upstart /etc/init -a #{application} -u #{user} -l #{release_path}/log/foreman"
+      run "cd #{release_path} && sudo bundle exec foreman export upstart /etc/init -a #{application} -u #{user} -l #{release_path}/log/foreman", :shell => default_shell
 
     end
     
