@@ -9,7 +9,7 @@ Capistrano::Configuration.instance(true).load do
       if rvm_ruby_string
         rvm_shell = File.join(rvm_bin_path, "rvm-shell")
         rvm_ruby = rvm_ruby_string.to_s.strip
-        bundle_cmd = "rvm_path=#{rvm_path} #{rvm_shell} '#{rvm_ruby}' -c 'sudo bundle %s'"
+        bundle_cmd = "rvm_path=#{rvm_path} sudo #{rvm_shell} '#{rvm_ruby}' -c 'bundle %s'"
       else
         bundle_cmd = 'sudo bundle %s'
       end
