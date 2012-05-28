@@ -14,7 +14,7 @@ Capistrano::Configuration.instance(true).load do
         bundle_cmd = 'sudo bundle %s'
       end
 
-      run "cd #{release_path} && " + bundle_cmd % "exec foreman export upstart /etc/init -a #{application} -u #{user} -l #{release_path}/log/foreman"
+      run "cd #{release_path} && " + bundle_cmd % "exec foreman export upstart /etc/init -a #{application} -u #{user} -l #{release_path}/log/foreman -f #{procfile}"
     end
     
     desc "Start the application services"
