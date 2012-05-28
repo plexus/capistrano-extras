@@ -6,9 +6,15 @@ Capistrano::Configuration.instance(true).load do
   namespace :foreman do
     desc 'Export the Procfile to Ubuntu upstart scripts'
     task :export, :roles => :app do
-      
-      run "cd #{release_path} && sudo bundle exec foreman export upstart /etc/init -a #{application} -u #{user} -l #{release_path}/log/foreman", :shell => default_shell
+      if rvm_ruby_string
+        rvm_shell = File.join(rvm_bin_path, "rvm-shell")
+        rvm_ruby = rvm_ruby_string.to_s.strip
+        bundle_cmd = "rvm_path=#{rvm_path} #{rvm_shell} '#{rvm_ruby}' -c 'sudo bundle %s'"
+      else
+        bundle_cmd = 'sudo bundle %s'
+      end
 
+      run "cd #{release_path} && " + bundle_cmd % "exec foreman export upstart /etc/init -a #{application} -u #{user} -l #{release_path}/log/foreman"
     end
     
     desc "Start the application services"
