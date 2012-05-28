@@ -14,7 +14,7 @@ Capistrano::Configuration.instance(true).load do
         bundle_cmd = 'sudo bundle %s'
       end
 
-      run "cd #{release_path} && " + bundle_cmd % "exec foreman export upstart /etc/init -a #{application} -u #{user} -l #{release_path}/log/foreman -f #{procfile}"
+      run "cd #{release_path} && " + bundle_cmd % "exec foreman export upstart /etc/init -a #{application} -u #{user} -l #{release_path}/log/foreman"
     end
     
     desc "Start the application services"
@@ -34,8 +34,14 @@ Capistrano::Configuration.instance(true).load do
       
       run "sudo start #{application} || sudo restart #{application}"
     end
+
+    desc "Create environment specific environment file, see '12 Factor App'"
+    task :env, :roles => :app do
+      put "RAILS_ENV=#{rails_env}\n#{foreman_env}", release_path + '/.env'
+    end
   end
   
   after "deploy:update", "foreman:export"    # Export foreman scripts
   after "deploy:update", "foreman:restart"   # Restart application scripts
+  after "deploy:update", "foreman:env"   # Restart application scripts
 end
